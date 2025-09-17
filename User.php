@@ -1,6 +1,7 @@
 <?php
 
-class User {
+class User
+{
     private int $id;
     private string $name;
     private string $email;
@@ -11,23 +12,26 @@ class User {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public function isValidPassword() {
-        
+    public function isValidPassword(string $password): bool
+    {
+        return password_verify($password, $this->password);
     }
 
-    public function setHashedPassword() {
-
+    public function setHashedPassword(string $password): string
+    {
+        return $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public function getUserData() {
+    public function getUserData()
+    {
         return "ID " . $this->id . "\n" . "Name " . $this->name . "\n" . "Email " . $this->email . "\n" . "Password " . $this->password . "\n";
     }
 }
 
 $vanessa = new User(1, "Vanessa", "vanesa123@gmail.com", "julieteamo");
+echo $vanessa->isValidPassword("julieteamo");
 
-echo $vanessa->getUserData();
-?>
+// echo $vanessa->getUserData();
